@@ -13,8 +13,8 @@ public class Robot extends IterativeRobot {
     public void robotInit() {
         drive = new CustomDrive();
 
-        driveStick = new Joystick(Parameters.driveJs);
-        driveWheel = new Joystick(Parameters.driveWheel);
+        driveStick = new Joystick(Parameters.DRIVE_JOYSTICK_ID);
+        driveWheel = new Joystick(Parameters.DRIVE_WHEEL_ID);
     }
 
     @Override

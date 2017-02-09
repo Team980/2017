@@ -1,48 +1,46 @@
 package com.team980.robot2017;
 
-class Parameters {
+public class Parameters {
 
-    //TODO PORTED FROM 2016 - NEEDS REORGANIZING
+    //TODO Change values to match robot
 
-    //motor channels
-    public static int leftMotorCh = 0;
-    public static int rightMotorCh = 1;
+    // JOYSTICKS
+    public static int DRIVE_JOYSTICK_ID = 0;
+    public static int DRIVE_WHEEL_ID = 1;
 
-    //drive parameters
-    public static double maxSpeed = 10.0; // in feet per second
-    public static double maxCommand = 1.0;
-    public static double turnGain = 1.0;
+    // DRIVE SYSTEM
+    public static int LEFT_DRIVE_PWM_CHANNEL = 0;
+    public static int RIGHT_DRIVE_PWM_CHANNEL = 1;
 
-    //joystick channels
-    public static int driveJs = 0;
-    public static int driveWheel = 1;
+    public static final double MAX_SPEED = 10.0; // in feet per second
+    public static final double TURN_GAIN = 1.0;
 
-    //encoder channels
-    public static int leftEncChA = 3;
-    public static int leftEncChB = 4;
-    public static int rightEncChA = 1;
-    public static int rightEncChB = 2;
+    public static final double SHIFT_THRESHOLD = 200;
 
-    //encoder stuff
-    public static boolean rightEncInvert = true;
-    public static boolean leftEncInvert = false;
+    // ENCODERS
+    public static final int LEFT_ENCODER_CHANNEL_A = 3;
+    public static final int LEFT_ENCODER_CHANNEL_B = 4;
+    public static final boolean INVERT_LEFT_ENCODER = false;
 
-    //drive PID values
-    public static double leftPIDp = 0.025;
-    public static double leftPIDi = 0.0;
-    public static double leftPIDd = 0.0;
-    public static double rightPIDp = 0.025;
-    public static double rightPIDi = 0.0;
-    public static double rightPIDd = 0.0;
+    public static final int RIGHT_ENCODER_CHANNEL_A = 1;
+    public static final int RIGHT_ENCODER_CHANNEL_B = 2;
+    public static final boolean INVERT_RIGHT_ENCODER = true;
 
-    public static double pidPercentTolerance = 0.0;
+    // PID
+    public static final double LEFT_PID_P = 0.025;
+    public static final double LEFT_PID_I = 0.0;
+    public static final double LEFT_PID_D = 0.0;
 
+    public static final double RIGHT_PID_P = 0.025;
+    public static final double RIGHT_PID_I = 0.0;
+    public static final double RIGHT_PID_D = 0.0;
 
-    public static double wheelRadius = 4.0;
-    public static double encoderCounts = 1024.0;
+    public static final double PID_PERCENT_TOLERANCE = 0.0;
 
-    public static final int SHIFT_SOLENOID_CHANNEL_A = 4; //reverse
-    public static final int SHIFT_SOLENOID_CHANNEL_B = 5; //forward
+    // PNEUMATICS
 
     public static final int PCM_CAN_ID = 1;
+
+    public static final int SHIFT_SOLENOID_CHANNEL_A = 4;
+    public static final int SHIFT_SOLENOID_CHANNEL_B = 5;
 }
