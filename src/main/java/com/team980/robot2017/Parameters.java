@@ -15,7 +15,7 @@ public class Parameters {
     public static final double MAX_SPEED = 10.0; // in feet per second
     public static final double TURN_GAIN = 1.0;
 
-    public static final double SHIFT_THRESHOLD = 200;
+    public static final double SHIFT_THRESHOLD = 5;
 
     // ENCODERS
     public static final int LEFT_ENCODER_CHANNEL_A = 3;
