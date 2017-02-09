@@ -19,7 +19,7 @@ public class Robot extends IterativeRobot {
 
     @Override
     public void autonomousInit() {
-
+        drive.setHighGear(false);
     }
 
     @Override
@@ -29,7 +29,7 @@ public class Robot extends IterativeRobot {
 
     @Override
     public void teleopInit() {
-
+        drive.setHighGear(false);
     }
 
     @Override

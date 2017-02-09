@@ -10,6 +10,10 @@ class CustomDrive {
     private PIDController leftSidePID;
     private PIDController rightSidePID;
 
+    private DoubleSolenoid shiftSolenoid;
+
+    private boolean inHighGear;
+
     CustomDrive() {
         SpeedController leftDriveTrain = new Spark(Parameters.leftMotorCh);
         SpeedController rightDriveTrain = new Spark(Parameters.rightMotorCh);
@@ -30,9 +34,17 @@ class CustomDrive {
         rightSidePID = new PIDController(Parameters.rightPIDp, Parameters.rightPIDi, Parameters.rightPIDd, rightDriveEncoder, rightDriveTrain);
         rightSidePID.setContinuous();
         rightSidePID.setPercentTolerance(Parameters.pidPercentTolerance);
+
+        shiftSolenoid = new DoubleSolenoid(Parameters.PCM_CAN_ID,
+                Parameters.SHIFT_SOLENOID_CHANNEL_B,
+                Parameters.SHIFT_SOLENOID_CHANNEL_A);
+
+        inHighGear = false;
     }
 
     void drive(Joystick driveJs, Joystick driveWheel) {
+
+        //Calculate velocity from input and set setpoints
         double turnValue = driveWheel.getAxis(Joystick.AxisType.kX);
         double throttleValue = -driveJs.getAxis(Joystick.AxisType.kY);
 
@@ -61,6 +73,16 @@ class CustomDrive {
 
         //leftDriveTrain.set(leftMotorCommand);
         //rightDriveTrain.set(rightMotorCommand);
+
+        //IF NOT TURNING, then check for shifting velocities and shift
+        /*if (leftEncoder.getDirection() == rightEncoder.getDirection()) { //Are we not turning (encoder directions match)?
+            if (Math.abs((leftEncoder.getRate() + rightEncoder.getRate() / 2)) > 200
+                    && !inHighGear) { //Are we above the high gear threshold and not in high gear?
+                setHighGear(true);
+            } else if (inHighGear) { //Are we below the threshold and in high gear?
+                setHighGear(false);
+            }
+        }*/
     }
 
     private double skimValue(double inputValue) {
@@ -69,5 +91,18 @@ class CustomDrive {
         else if (inputValue < -1.0)
             return ((inputValue + 1.0) * Parameters.turnGain);
         return 0;
+    }
+
+    /**
+     * Should be called in autonomousInit() and teleopInit()
+     */
+    public void setHighGear(boolean enable) { //TODO Make sure this does what we want it to do
+        if (enable) {
+            shiftSolenoid.set(DoubleSolenoid.Value.kForward);
+            inHighGear = true;
+        } else {
+            shiftSolenoid.set(DoubleSolenoid.Value.kReverse);
+            inHighGear = false;
+        }
     }
 }

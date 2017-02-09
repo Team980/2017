@@ -40,4 +40,9 @@ class Parameters {
 
     public static double wheelRadius = 4.0;
     public static double encoderCounts = 1024.0;
+
+    public static final int SHIFT_SOLENOID_CHANNEL_A = 4; //reverse
+    public static final int SHIFT_SOLENOID_CHANNEL_B = 5; //forward
+
+    public static final int PCM_CAN_ID = 1;
 }
