@@ -18,9 +18,11 @@ Eclipse users should also DISABLE WPILib if they have it installed.
 
 ## Building and deploying your code
 - ```gradlew build``` will build your Robot Code
-- ```gradlew deploy``` will build and deploy your code to the RoboRIO
+- ```gradlew deploy``` will deploy your built code to the RoboRIO
+These tasks must be run in succession.
 
-More instructions on how to use GradleRIO are located in GradleRIO4Dummies.txt.
+In addition, Gradle tasks may fail without an internet connection.
+You can rectify this with the ```--offline``` flag.
 
 These tasks are also listed in the Gradle window in IntelliJ IDEA, or the Gradle Tasks window in Eclipse.
 You can even create run configurations to launch these tasks!
