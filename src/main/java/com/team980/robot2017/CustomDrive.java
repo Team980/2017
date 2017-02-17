@@ -2,7 +2,7 @@ package com.team980.robot2017;
 
 import edu.wpi.first.wpilibj.*;
 
-class CustomDrive {
+public class CustomDrive {
 
     private Encoder leftDriveEncoder;
     private Encoder rightDriveEncoder;
@@ -85,12 +85,9 @@ class CustomDrive {
         }
     }
 
-    private double skimValue(double inputValue) {
-        if (inputValue > 1.0)
-            return ((inputValue - 1.0) * Parameters.TURN_GAIN);
-        else if (inputValue < -1.0)
-            return ((inputValue + 1.0) * Parameters.TURN_GAIN);
-        return 0;
+    public void setLeftRightMotorSetpoints(double leftSetpoint, double rightSetpoint) {
+        leftSidePID.setSetpoint(leftSetpoint);
+        rightSidePID.setSetpoint(rightSetpoint);
     }
 
     /**
@@ -104,5 +101,21 @@ class CustomDrive {
             shiftSolenoid.set(DoubleSolenoid.Value.kReverse);
             inHighGear = false;
         }
+    }
+
+    public Encoder getLeftDriveEncoder() {
+        return leftDriveEncoder;
+    }
+
+    public Encoder getRightDriveEncoder() {
+        return rightDriveEncoder;
+    }
+
+    private double skimValue(double inputValue) {
+        if (inputValue > 1.0)
+            return ((inputValue - 1.0) * Parameters.TURN_GAIN);
+        else if (inputValue < -1.0)
+            return ((inputValue + 1.0) * Parameters.TURN_GAIN);
+        return 0;
     }
 }

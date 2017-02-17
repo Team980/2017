@@ -42,4 +42,10 @@ public class Parameters {
 
     public static final int SHIFT_SOLENOID_CHANNEL_A = 4;
     public static final int SHIFT_SOLENOID_CHANNEL_B = 5;
+
+    // AUTONOMOUS
+    public static final int AUTO_LEFT_SETPOINT = 1;
+    public static final int AUTO_RIGHT_SETPOINT = 1;
+
+    public static final int AUTO_DISTANCE_BASELINE_CROSS = 10; //in feet, the baseline is 9'4" from the alliance station
 }

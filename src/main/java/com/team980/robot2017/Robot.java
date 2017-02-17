@@ -1,5 +1,6 @@
 package com.team980.robot2017;
 
+import com.team980.robot2017.autonomous.SimpleBaselineCross;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.command.Command;
@@ -24,6 +25,7 @@ public class Robot extends IterativeRobot {
 
         autoChooser = new SendableChooser<>();
         autoChooser.addObject("None", null);
+        autoChooser.addObject("Simple Baseline Cross", new SimpleBaselineCross(drive));
         SmartDashboard.putData("Autonomous mode chooser", autoChooser);
     }
 
