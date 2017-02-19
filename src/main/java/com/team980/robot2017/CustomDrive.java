@@ -10,30 +10,37 @@ public class CustomDrive {
     private PIDController leftSidePID;
     private PIDController rightSidePID;
 
+    private SpeedController leftDriveTrain;
+    private SpeedController rightDriveTrain;
+
     private DoubleSolenoid shiftSolenoid;
 
     private boolean inHighGear;
 
     CustomDrive() {
-        SpeedController leftDriveTrain = new Spark(Parameters.LEFT_DRIVE_PWM_CHANNEL);
-        SpeedController rightDriveTrain = new Spark(Parameters.RIGHT_DRIVE_PWM_CHANNEL);
+        leftDriveTrain = new Spark(Parameters.LEFT_DRIVE_PWM_CHANNEL);
+        rightDriveTrain = new Spark(Parameters.RIGHT_DRIVE_PWM_CHANNEL);
         rightDriveTrain.setInverted(true);
 
-        leftDriveEncoder = new Encoder(Parameters.LEFT_ENCODER_CHANNEL_A, Parameters.LEFT_ENCODER_CHANNEL_B, Parameters.INVERT_LEFT_ENCODER, CounterBase.EncodingType.k4X);
-        leftDriveEncoder.setDistancePerPulse((2 * (Constants.PI) * (Constants.wheelRadius / 12)) / (Constants.encoderCounts));
+        leftDriveEncoder = new Encoder(Parameters.LEFT_ENCODER_DIO_CHANNEL_A, Parameters.LEFT_ENCODER_DIO_CHANNEL_B, Parameters.INVERT_LEFT_ENCODER, CounterBase.EncodingType.k4X);
+        leftDriveEncoder.setDistancePerPulse((2 * (Constants.PI) * (Constants.wheelRadius / 12)) / (Constants.encoderPulsesPerRevolution));
         leftDriveEncoder.setPIDSourceType(PIDSourceType.kRate);
 
-        rightDriveEncoder = new Encoder(Parameters.RIGHT_ENCODER_CHANNEL_A, Parameters.RIGHT_ENCODER_CHANNEL_B, Parameters.INVERT_RIGHT_ENCODER, CounterBase.EncodingType.k4X);
-        rightDriveEncoder.setDistancePerPulse((2 * (Constants.PI) * (Constants.wheelRadius / 12)) / (Constants.encoderCounts));
+        rightDriveEncoder = new Encoder(Parameters.RIGHT_ENCODER__DIO_CHANNEL_A, Parameters.RIGHT_ENCODER__DIO_CHANNEL_B, Parameters.INVERT_RIGHT_ENCODER, CounterBase.EncodingType.k4X);
+        rightDriveEncoder.setDistancePerPulse((2 * (Constants.PI) * (Constants.wheelRadius / 12)) / (Constants.encoderPulsesPerRevolution));
         rightDriveEncoder.setPIDSourceType(PIDSourceType.kRate);
 
         leftSidePID = new PIDController(Parameters.LEFT_PID_P, Parameters.LEFT_PID_I, Parameters.LEFT_PID_D, leftDriveEncoder, leftDriveTrain);
         leftSidePID.setContinuous();
         leftSidePID.setPercentTolerance(Parameters.PID_PERCENT_TOLERANCE);
+        //leftSidePID.enable();
+        leftSidePID.disable();
 
         rightSidePID = new PIDController(Parameters.RIGHT_PID_P, Parameters.RIGHT_PID_I, Parameters.RIGHT_PID_D, rightDriveEncoder, rightDriveTrain);
         rightSidePID.setContinuous();
         rightSidePID.setPercentTolerance(Parameters.PID_PERCENT_TOLERANCE);
+        //rightSidePID.enable();
+        rightSidePID.disable();
 
         shiftSolenoid = new DoubleSolenoid(Parameters.PCM_CAN_ID,
                 Parameters.SHIFT_SOLENOID_CHANNEL_B,
@@ -68,11 +75,12 @@ public class CustomDrive {
         double leftMotorVelocity = leftMotorCommand * Parameters.MAX_SPEED;
         double rightMotorVelocity = rightMotorCommand * Parameters.MAX_SPEED;
 
-        leftSidePID.setSetpoint(leftMotorVelocity);
-        rightSidePID.setSetpoint(rightMotorVelocity);
+        //leftSidePID.setSetpoint(leftMotorVelocity);
+        //rightSidePID.setSetpoint(rightMotorVelocity);
 
-        //leftDriveTrain.set(leftMotorCommand);
-        //rightDriveTrain.set(rightMotorCommand);
+        //TODO reenable PID
+        leftDriveTrain.set(leftMotorCommand);
+        rightDriveTrain.set(rightMotorCommand);
 
         //IF NOT TURNING, then check for shifting velocities and shift
         if (leftDriveEncoder.getDirection() == rightDriveEncoder.getDirection()) { //Are we not turning (encoder directions match)?
@@ -85,6 +93,9 @@ public class CustomDrive {
         }
     }
 
+    /**
+     * Velocity setpoints
+     */
     public void setLeftRightMotorSetpoints(double leftSetpoint, double rightSetpoint) {
         leftSidePID.setSetpoint(leftSetpoint);
         rightSidePID.setSetpoint(rightSetpoint);

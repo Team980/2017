@@ -50,6 +50,9 @@ public class Robot extends IterativeRobot {
     @Override
     public void teleopInit() {
         drive.setHighGear(false);
+
+        drive.getLeftDriveEncoder().reset();
+        drive.getRightDriveEncoder().reset();
     }
 
     @Override
