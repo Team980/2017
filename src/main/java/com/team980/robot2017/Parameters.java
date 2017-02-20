@@ -7,6 +7,7 @@ public class Parameters {
     // JOYSTICKS
     public static final int DRIVE_JOYSTICK_ID = 0;
     public static final int DRIVE_WHEEL_ID = 1;
+    public static final int OPERATOR_BOX_ID = 2;
 
     // DRIVE SYSTEM
     public static final int LEFT_DRIVE_PWM_CHANNEL = 0;
@@ -22,8 +23,8 @@ public class Parameters {
     public static final int LEFT_ENCODER_DIO_CHANNEL_B = 2;
     public static final boolean INVERT_LEFT_ENCODER = false;
 
-    public static final int RIGHT_ENCODER__DIO_CHANNEL_A = 4;
-    public static final int RIGHT_ENCODER__DIO_CHANNEL_B = 5;
+    public static final int RIGHT_ENCODER_DIO_CHANNEL_A = 4;
+    public static final int RIGHT_ENCODER_DIO_CHANNEL_B = 5;
     public static final boolean INVERT_RIGHT_ENCODER = true;
 
     // PID
@@ -40,12 +41,11 @@ public class Parameters {
     // PNEUMATICS
     public static final int PCM_CAN_ID = 1;
 
-    public static final int SHIFT_SOLENOID_CHANNEL_A = 4;
-    public static final int SHIFT_SOLENOID_CHANNEL_B = 5;
+    public static final int SHIFT_SOLENOID_CHANNEL = 4;
+    public static final int CLIMBER_SOLENOID_CHANNEL = 5;
 
     // AUTONOMOUS
-    public static final int AUTO_LEFT_SETPOINT = 5; //All setpoints are scaled in feet per second
-    public static final int AUTO_RIGHT_SETPOINT = 5; //TODO test
+    public static final int AUTO_SETPOINT = 5; //All setpoints are scaled in feet per second
 
     public static final int AUTO_DISTANCE_BASELINE_CROSS = 10; //in feet, the baseline is 9'4" from the alliance station
 }

@@ -12,6 +12,8 @@ public class Robot extends IterativeRobot {
 
     private Joystick driveStick;
     private Joystick driveWheel;
+    private Joystick operatorBox;
+
     private CustomDrive drive;
 
     private SendableChooser<Command> autoChooser;
@@ -22,6 +24,7 @@ public class Robot extends IterativeRobot {
 
         driveStick = new Joystick(Parameters.DRIVE_JOYSTICK_ID);
         driveWheel = new Joystick(Parameters.DRIVE_WHEEL_ID);
+        operatorBox = new Joystick(Parameters.OPERATOR_BOX_ID);
 
         autoChooser = new SendableChooser<>();
         autoChooser.addObject("None", null);
@@ -32,8 +35,9 @@ public class Robot extends IterativeRobot {
     @Override
     public void autonomousInit() {
         drive.setHighGear(false);
+
         Command autoCommand = autoChooser.getSelected();
-        if (autoCommand !=  null) {
+        if (autoCommand != null) {
             System.out.println("Starting autonomous " + autoCommand.getName());
             autoCommand.start();
         } else {

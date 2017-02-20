@@ -4,16 +4,16 @@ import edu.wpi.first.wpilibj.*;
 
 public class CustomDrive {
 
+    private SpeedController leftDriveTrain;
+    private SpeedController rightDriveTrain;
+
     private Encoder leftDriveEncoder;
     private Encoder rightDriveEncoder;
 
     private PIDController leftSidePID;
     private PIDController rightSidePID;
 
-    private SpeedController leftDriveTrain;
-    private SpeedController rightDriveTrain;
-
-    private DoubleSolenoid shiftSolenoid;
+    private Solenoid shiftSolenoid;
 
     private boolean inHighGear;
 
@@ -26,7 +26,7 @@ public class CustomDrive {
         leftDriveEncoder.setDistancePerPulse((2 * (Constants.PI) * (Constants.wheelRadius / 12)) / (Constants.encoderPulsesPerRevolution));
         leftDriveEncoder.setPIDSourceType(PIDSourceType.kRate);
 
-        rightDriveEncoder = new Encoder(Parameters.RIGHT_ENCODER__DIO_CHANNEL_A, Parameters.RIGHT_ENCODER__DIO_CHANNEL_B, Parameters.INVERT_RIGHT_ENCODER, CounterBase.EncodingType.k4X);
+        rightDriveEncoder = new Encoder(Parameters.RIGHT_ENCODER_DIO_CHANNEL_A, Parameters.RIGHT_ENCODER_DIO_CHANNEL_B, Parameters.INVERT_RIGHT_ENCODER, CounterBase.EncodingType.k4X);
         rightDriveEncoder.setDistancePerPulse((2 * (Constants.PI) * (Constants.wheelRadius / 12)) / (Constants.encoderPulsesPerRevolution));
         rightDriveEncoder.setPIDSourceType(PIDSourceType.kRate);
 
@@ -42,9 +42,7 @@ public class CustomDrive {
         //rightSidePID.enable();
         rightSidePID.disable();
 
-        shiftSolenoid = new DoubleSolenoid(Parameters.PCM_CAN_ID,
-                Parameters.SHIFT_SOLENOID_CHANNEL_B,
-                Parameters.SHIFT_SOLENOID_CHANNEL_A);
+        shiftSolenoid = new Solenoid(Parameters.PCM_CAN_ID, Parameters.SHIFT_SOLENOID_CHANNEL);
 
         inHighGear = false;
     }
@@ -82,8 +80,8 @@ public class CustomDrive {
         leftDriveTrain.set(leftMotorCommand);
         rightDriveTrain.set(rightMotorCommand);
 
-        //IF NOT TURNING, then check for shifting velocities and shift
-        if (leftDriveEncoder.getDirection() == rightDriveEncoder.getDirection()) { //Are we not turning (encoder directions match)?
+        //Check for shifting velocities and shift
+        if (Math.abs(leftDriveEncoder.getRate() - rightDriveEncoder.getRate()) < 1) { //Are we driving essentially straight?
             if (Math.abs((leftDriveEncoder.getRate() + rightDriveEncoder.getRate() / 2)) > Parameters.SHIFT_THRESHOLD
                     && !inHighGear) { //Are we above the high gear threshold and not in high gear?
                 setHighGear(true);
@@ -94,7 +92,7 @@ public class CustomDrive {
     }
 
     /**
-     * Velocity setpoints
+     * Velocity setpoints - used in autonomous modes
      */
     public void setLeftRightMotorSetpoints(double leftSetpoint, double rightSetpoint) {
         leftSidePID.setSetpoint(leftSetpoint);
@@ -104,14 +102,9 @@ public class CustomDrive {
     /**
      * Should be called in autonomousInit() and teleopInit()
      */
-    public void setHighGear(boolean enable) { //TODO Make sure this does what we want it to do
-        if (enable) {
-            shiftSolenoid.set(DoubleSolenoid.Value.kForward);
-            inHighGear = true;
-        } else {
-            shiftSolenoid.set(DoubleSolenoid.Value.kReverse);
-            inHighGear = false;
-        }
+    public void setHighGear(boolean state) {
+        shiftSolenoid.set(state);
+        inHighGear = state;
     }
 
     public Encoder getLeftDriveEncoder() {

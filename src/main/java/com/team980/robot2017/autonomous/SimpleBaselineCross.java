@@ -38,7 +38,7 @@ public class SimpleBaselineCross extends Command {
             drive.setLeftRightMotorSetpoints(0, 0); //Stop driving
             isFinished = true;
         } else {
-            drive.setLeftRightMotorSetpoints(Parameters.AUTO_LEFT_SETPOINT, Parameters.AUTO_RIGHT_SETPOINT);
+            drive.setLeftRightMotorSetpoints(Parameters.AUTO_SETPOINT, Parameters.AUTO_SETPOINT);
         }
     }
 
