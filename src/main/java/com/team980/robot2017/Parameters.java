@@ -5,8 +5,8 @@ public class Parameters {
     //TODO Change values to match robot
 
     // JOYSTICKS
-    public static int DRIVE_JOYSTICK_ID = 0;
-    public static int DRIVE_WHEEL_ID = 1;
+    public static final int DRIVE_JOYSTICK_ID = 0;
+    public static final int DRIVE_WHEEL_ID = 1;
 
     // DRIVE SYSTEM
     public static final int LEFT_DRIVE_PWM_CHANNEL = 0;
@@ -20,11 +20,11 @@ public class Parameters {
     // ENCODERS
     public static final int LEFT_ENCODER_DIO_CHANNEL_A = 1;
     public static final int LEFT_ENCODER_DIO_CHANNEL_B = 2;
-    public static final boolean INVERT_LEFT_ENCODER = false; //TODO read values
+    public static final boolean INVERT_LEFT_ENCODER = false;
 
     public static final int RIGHT_ENCODER__DIO_CHANNEL_A = 4;
     public static final int RIGHT_ENCODER__DIO_CHANNEL_B = 5;
-    public static final boolean INVERT_RIGHT_ENCODER = false; //TODO
+    public static final boolean INVERT_RIGHT_ENCODER = true;
 
     // PID
     public static final double LEFT_PID_P = 0.025; //TODO tune the PID
@@ -38,7 +38,7 @@ public class Parameters {
     public static final double PID_PERCENT_TOLERANCE = 0.0;
 
     // PNEUMATICS
-    public static final int PCM_CAN_ID = 1; //TODO
+    public static final int PCM_CAN_ID = 1;
 
     public static final int SHIFT_SOLENOID_CHANNEL_A = 4;
     public static final int SHIFT_SOLENOID_CHANNEL_B = 5;

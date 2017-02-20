@@ -58,6 +58,8 @@ public class Robot extends IterativeRobot {
     @Override
     public void teleopPeriodic() {
         drive.drive(driveStick, driveWheel);
+        System.out.println("Left: " + drive.getLeftDriveEncoder().getRate());
+        System.out.println("Right: " + drive.getRightDriveEncoder().getRate());
     }
 
     @Override
