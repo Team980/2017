@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -17,6 +18,8 @@ public class Robot extends IterativeRobot {
     private CustomDrive drive;
 
     private SendableChooser<Command> autoChooser;
+
+    private NetworkTable table;
 
     @Override
     public void robotInit() {
@@ -57,13 +60,20 @@ public class Robot extends IterativeRobot {
 
         drive.getLeftDriveEncoder().reset();
         drive.getRightDriveEncoder().reset();
+
+        table = NetworkTable.getTable("Encoders");
     }
 
     @Override
     public void teleopPeriodic() {
         drive.drive(driveStick, driveWheel);
-        System.out.println("Left: " + drive.getLeftDriveEncoder().getRate());
-        System.out.println("Right: " + drive.getRightDriveEncoder().getRate());
+
+        table.putNumber("leftScaled", drive.getLeftDriveEncoder().getRate());
+        table.putNumber("rightScaled", drive.getRightDriveEncoder().getRate());
+
+        table.putNumber("leftRaw", drive.getLeftDriveEncoder().getRaw());
+        table.putNumber("rightRaw", drive.getRightDriveEncoder().getRaw());
+
     }
 
     @Override
