@@ -32,6 +32,10 @@ public class Robot extends IterativeRobot {
         autoChooser = new SendableChooser<>();
         autoChooser.addObject("None", null);
         autoChooser.addObject("Simple Baseline Cross", new SimpleBaselineCross(drive));
+        //autoChooser.addObject("Front Gear Placement", new FrontGearPlace(drive));
+        //autoChooser.addObject("Left Gear Placement", new SideGearPlace(drive, SideGearPlace.AirshipSide.LEFT));
+        //autoChooser.addObject("Right Gear Placement", new SideGearPlace(drive, SideGearPlace.AirshipSide.RIGHT));
+
         SmartDashboard.putData("Autonomous mode chooser", autoChooser);
     }
 
