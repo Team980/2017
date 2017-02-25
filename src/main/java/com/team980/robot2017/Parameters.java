@@ -44,8 +44,11 @@ public class Parameters {
     public static final int SHIFT_SOLENOID_CHANNEL = 4;
     public static final int CLIMBER_SOLENOID_CHANNEL = 5;
 
-    // AUTONOMOUS
-    public static final int AUTO_SETPOINT = 5; //All setpoints are scaled in feet per second
+    // IMU
+    public static final int IMU_CAN_ID = 4;
 
-    public static final int AUTO_DISTANCE_BASELINE_CROSS = 10; //in feet, the baseline is 9'4" from the alliance station
+    // AUTONOMOUS
+    public static final int AUTO_SPEED = 5; //All setpoints are scaled in feet per second
+
+    //Mode-specific parameters moved to their respective commands
 }

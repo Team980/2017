@@ -17,6 +17,8 @@ public class Robot extends IterativeRobot {
 
     private CustomDrive drive;
 
+    //private PigeonImu imu;
+
     private SendableChooser<Command> autoChooser;
 
     private NetworkTable table;
@@ -25,6 +27,8 @@ public class Robot extends IterativeRobot {
     public void robotInit() {
         drive = new CustomDrive();
 
+        //imu = new PigeonImu(Parameters.IMU_CAN_ID);
+
         driveStick = new Joystick(Parameters.DRIVE_JOYSTICK_ID);
         driveWheel = new Joystick(Parameters.DRIVE_WHEEL_ID);
         operatorBox = new Joystick(Parameters.OPERATOR_BOX_ID);
@@ -32,9 +36,6 @@ public class Robot extends IterativeRobot {
         autoChooser = new SendableChooser<>();
         autoChooser.addObject("None", null);
         autoChooser.addObject("Simple Baseline Cross", new SimpleBaselineCross(drive));
-        //autoChooser.addObject("Front Gear Placement", new FrontGearPlace(drive));
-        //autoChooser.addObject("Left Gear Placement", new SideGearPlace(drive, SideGearPlace.AirshipSide.LEFT));
-        //autoChooser.addObject("Right Gear Placement", new SideGearPlace(drive, SideGearPlace.AirshipSide.RIGHT));
 
         SmartDashboard.putData("Autonomous mode chooser", autoChooser);
     }
