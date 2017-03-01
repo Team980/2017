@@ -4,6 +4,7 @@ import com.ctre.PigeonImu;
 import com.team980.robot2017.CustomDrive;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
+@Deprecated
 public class LeftSideGearPlace extends CommandGroup {
 
     //Schedules subcommands

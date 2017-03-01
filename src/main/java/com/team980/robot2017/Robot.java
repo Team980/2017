@@ -1,5 +1,7 @@
 package com.team980.robot2017;
 
+import com.team980.robot2017.autonomous.FrontGearPlace;
+import com.team980.robot2017.autonomous.SideGearPlace;
 import com.team980.robot2017.autonomous.SimpleBaselineCross;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
@@ -36,6 +38,16 @@ public class Robot extends IterativeRobot {
         autoChooser = new SendableChooser<>();
         autoChooser.addObject("None", null);
         autoChooser.addObject("Simple Baseline Cross", new SimpleBaselineCross(drive));
+        autoChooser.addObject("Front Gear Place", new FrontGearPlace(drive));
+        autoChooser.addObject("Side Gear Place - Red Alliance Left",
+                new SideGearPlace(drive, SideGearPlace.Position.RED_ALLIANCE_LEFT));
+        autoChooser.addObject("Side Gear Place - Red Alliance Right",
+                new SideGearPlace(drive, SideGearPlace.Position.RED_ALLIANCE_RIGHT));
+        autoChooser.addObject("Side Gear Place - Blue Alliance Left",
+                new SideGearPlace(drive, SideGearPlace.Position.BLUE_ALLIANCE_LEFT));
+        autoChooser.addObject("Side Gear Place - Blue Alliance Right",
+                new SideGearPlace(drive, SideGearPlace.Position.BLUE_ALLIANCE_RIGHT));
+
 
         SmartDashboard.putData("Autonomous mode chooser", autoChooser);
     }
