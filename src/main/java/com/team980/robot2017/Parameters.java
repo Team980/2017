@@ -48,7 +48,7 @@ public class Parameters {
     public static final int IMU_CAN_ID = 4;
 
     // AUTONOMOUS
-    public static final int AUTO_SPEED = 5; //All setpoints are scaled in feet per second
+    public static final int AUTO_SPEED = 3; //All setpoints are scaled in feet per second
 
     //Mode-specific parameters moved to their respective commands
 }
