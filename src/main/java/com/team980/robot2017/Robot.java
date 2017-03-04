@@ -13,7 +13,7 @@ public class Robot extends IterativeRobot {
 
     private Joystick driveStick;
     private Joystick driveWheel;
-    private Joystick operatorBox;
+    //private Joystick operatorBox;
 
     private CustomDrive drive;
 
@@ -31,7 +31,7 @@ public class Robot extends IterativeRobot {
 
         driveStick = new Joystick(Parameters.DRIVE_JOYSTICK_ID);
         driveWheel = new Joystick(Parameters.DRIVE_WHEEL_ID);
-        operatorBox = new Joystick(Parameters.OPERATOR_BOX_ID);
+        //operatorBox = new Joystick(Parameters.OPERATOR_BOX_ID);
 
         autoChooser = new SendableChooser<>();
         autoChooser.addObject("None", null);
