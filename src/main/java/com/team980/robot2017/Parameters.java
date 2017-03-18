@@ -1,9 +1,6 @@
 package com.team980.robot2017;
 
 public class Parameters {
-
-    //TODO Change values to match robot
-
     // JOYSTICKS
     public static final int DRIVE_JOYSTICK_ID = 0;
     public static final int DRIVE_WHEEL_ID = 1;
@@ -14,9 +11,11 @@ public class Parameters {
     public static final int RIGHT_DRIVE_PWM_CHANNEL = 1;
 
     public static final double MAX_SPEED = 16.0; // in feet per second
-    public static final double TURN_GAIN = 1.0;
+    public static final double TURN_DAMPEN = 0.6; // adjust this to dampen the steering: [0.0, 1.0]
+    public static final double TURN_GAIN = 1.0;  // do not adjust this
 
-    public static final double SHIFT_THRESHOLD = 5; //TODO calculate with Mark
+    public static final double SHIFT_THRESHOLD = 4; // in feet per second
+    public static final double SHIFT_THRESHOLD_DELTA = 0.5; // in feed per second
 
     // ENCODERS
     public static final int LEFT_ENCODER_DIO_CHANNEL_A = 1;
@@ -38,6 +37,14 @@ public class Parameters {
 
     public static final double PID_PERCENT_TOLERANCE = 0.0;
 
+    // BALL PICKUP
+    public static final int INTAKE_MOTOR_CAN_ID = 3;
+    public static final int OUTPUT_MOTOR_CAN_ID = 2;
+
+    public static final double INTAKE_MOTOR_SPEED = 1.0;
+    public static final double OUTPUT_MOTOR_SPEED = 1.0;
+    public static final double OUTPUT_SLOW_MULTIPLIER = 0.5;
+
     // PNEUMATICS
     public static final int PCM_CAN_ID = 1;
 
@@ -48,7 +55,6 @@ public class Parameters {
     public static final int IMU_CAN_ID = 4;
 
     // AUTONOMOUS
-    public static final int AUTO_SPEED = 3; //All setpoints are scaled in feet per second
-
-    //Mode-specific parameters moved to their respective commands
+    public static final double AUTO_SPEED = 0.4; //Until PID is back: [-1.0, 1.0]
+    public static final double AUTO_DISTANCE = 15.0; // in feet
 }

@@ -19,6 +19,7 @@ public class CustomDrive {
 
     CustomDrive() {
         leftDriveTrain = new Spark(Parameters.LEFT_DRIVE_PWM_CHANNEL);
+
         rightDriveTrain = new Spark(Parameters.RIGHT_DRIVE_PWM_CHANNEL);
         rightDriveTrain.setInverted(true);
 
@@ -33,13 +34,13 @@ public class CustomDrive {
         leftSidePID = new PIDController(Parameters.LEFT_PID_P, Parameters.LEFT_PID_I, Parameters.LEFT_PID_D, leftDriveEncoder, leftDriveTrain);
         leftSidePID.setContinuous();
         leftSidePID.setPercentTolerance(Parameters.PID_PERCENT_TOLERANCE);
-        //leftSidePID.enable();
+        //leftSidePID.enable(); //TODO: Reenable PID
         leftSidePID.disable();
 
         rightSidePID = new PIDController(Parameters.RIGHT_PID_P, Parameters.RIGHT_PID_I, Parameters.RIGHT_PID_D, rightDriveEncoder, rightDriveTrain);
         rightSidePID.setContinuous();
         rightSidePID.setPercentTolerance(Parameters.PID_PERCENT_TOLERANCE);
-        //rightSidePID.enable();
+        //rightSidePID.enable(); //TODO: Reenable PID
         rightSidePID.disable();
 
         shiftSolenoid = new Solenoid(Parameters.PCM_CAN_ID, Parameters.SHIFT_SOLENOID_CHANNEL);
@@ -50,12 +51,13 @@ public class CustomDrive {
     void drive(Joystick driveJs, Joystick driveWheel) {
 
         //Calculate velocity from input and set setpoints
-        double turnValue = driveWheel.getAxis(Joystick.AxisType.kX);
+        double turnValue = driveWheel.getAxis(Joystick.AxisType.kX) * Parameters.TURN_DAMPEN;
         double throttleValue = -driveJs.getAxis(Joystick.AxisType.kY);
 
         if (java.lang.Math.abs(driveWheel.getAxis(Joystick.AxisType.kX)) < 0.2) {
             turnValue = 0.0;
         }
+
         if (java.lang.Math.abs(driveJs.getAxis(Joystick.AxisType.kY)) < 0.2) {
             throttleValue = 0.0;
         }
@@ -73,19 +75,19 @@ public class CustomDrive {
         double leftMotorVelocity = leftMotorCommand * Parameters.MAX_SPEED;
         double rightMotorVelocity = rightMotorCommand * Parameters.MAX_SPEED;
 
+        //TODO: Reenable PID
         //leftSidePID.setSetpoint(leftMotorVelocity);
         //rightSidePID.setSetpoint(rightMotorVelocity);
-
-        //TODO reenable PID
         leftDriveTrain.set(leftMotorCommand);
         rightDriveTrain.set(rightMotorCommand);
 
-        //Check for shifting velocities and shift
+        //Check for shifting velocities and shift (i.e. automatically shift)
         if (Math.abs(leftDriveEncoder.getRate() - rightDriveEncoder.getRate()) < 1) { //Are we driving essentially straight?
-            if (Math.abs((leftDriveEncoder.getRate() + rightDriveEncoder.getRate() / 2)) > Parameters.SHIFT_THRESHOLD
-                    && !inHighGear) { //Are we above the high gear threshold and not in high gear?
+            if (Math.abs((leftDriveEncoder.getRate() + rightDriveEncoder.getRate())/ 2) > (Parameters.SHIFT_THRESHOLD + Parameters.SHIFT_THRESHOLD_DELTA)
+                    && !inHighGear) {
                 setHighGear(true);
-            } else if (inHighGear) { //Are we below the threshold and in high gear?
+            } else if (Math.abs((leftDriveEncoder.getRate() + rightDriveEncoder.getRate())/ 2) < (Parameters.SHIFT_THRESHOLD - Parameters.SHIFT_THRESHOLD_DELTA)
+                    && inHighGear) {
                 setHighGear(false);
             }
         }
@@ -95,15 +97,18 @@ public class CustomDrive {
      * Velocity setpoints - used in autonomous modes
      */
     public void setLeftRightMotorSetpoints(double leftSetpoint, double rightSetpoint) {
-        leftSidePID.setSetpoint(leftSetpoint);
-        rightSidePID.setSetpoint(rightSetpoint);
+        //TODO: Reenable PID
+        //leftSidePID.setSetpoint(leftSetpoint);
+        //rightSidePID.setSetpoint(rightSetpoint);
+        leftDriveTrain.set(leftSetpoint);
+        rightDriveTrain.set(rightSetpoint);
     }
 
     /**
      * Should be called in autonomousInit() and teleopInit()
      */
     public void setHighGear(boolean state) {
-        shiftSolenoid.set(state);
+        shiftSolenoid.set(!state);
         inHighGear = state;
     }
 
@@ -114,6 +119,8 @@ public class CustomDrive {
     public Encoder getRightDriveEncoder() {
         return rightDriveEncoder;
     }
+
+    public boolean getInHighGear() { return  inHighGear;}
 
     private double skimValue(double inputValue) {
         if (inputValue > 1.0)
