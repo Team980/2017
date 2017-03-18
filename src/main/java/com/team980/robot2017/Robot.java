@@ -11,7 +11,6 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Robot extends IterativeRobot {
 
@@ -74,7 +73,7 @@ public class Robot extends IterativeRobot {
 
         Command autoCommand = new SimpleBaselineCross(drive);
         if (autoCommand != null) {
-            System.out.println("Starting au5onomous " + autoCommand.getName());
+            System.out.println("Starting autonomous " + autoCommand.getName());
             autoCommand.start();
         } else {
             System.out.println("No autonomous selected, idling");

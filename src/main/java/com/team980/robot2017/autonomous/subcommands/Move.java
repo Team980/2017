@@ -11,7 +11,7 @@ public class Move extends Command {
     private Encoder leftDriveEncoder;
     private Encoder rightDriveEncoder;
 
-    private double distance;
+    private double distance; //in feet
 
     private boolean isFinished = false;
 
