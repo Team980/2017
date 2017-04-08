@@ -50,6 +50,7 @@ public class Parameters {
 
     public static final int SHIFT_SOLENOID_CHANNEL = 4;
     public static final int CLIMBER_SOLENOID_CHANNEL = 5;
+    public static final int GEAR_SOLENOID_CHANNEL = 6; //TODO: determine correct channel
 
     // IMU
     public static final int IMU_CAN_ID = 4;

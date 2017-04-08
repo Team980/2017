@@ -120,6 +120,10 @@ public class CustomDrive {
         return rightDriveEncoder;
     }
 
+    public SpeedController getLeftSpeedController(){return leftDriveTrain;}
+
+    public SpeedController getRightSpeedController(){return rightDriveTrain;}
+
     public boolean getInHighGear() { return  inHighGear;}
 
     private double skimValue(double inputValue) {

@@ -2,6 +2,7 @@ package com.team980.robot2017.autonomous;
 
 import com.ctre.PigeonImu;
 import com.team980.robot2017.CustomDrive;
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
 @Deprecated

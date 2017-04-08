@@ -5,6 +5,7 @@ import com.team980.robot2017.Parameters;
 import com.team980.robot2017.autonomous.subcommands.Move;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
+/**Do not use in place of FrontGearPlace*/
 public class SimpleBaselineCross extends CommandGroup {
 
     //Handles parameters

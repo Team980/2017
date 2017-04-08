@@ -1,6 +1,7 @@
 package com.team980.robot2017;
 
 import com.ctre.CANTalon;
+import com.team980.robot2017.autonomous.SideGearPlace;
 import com.team980.robot2017.autonomous.SimpleBaselineCross;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.CameraServer;
@@ -12,6 +13,8 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 
+import static com.team980.robot2017.autonomous.SideGearPlace.Position.*;
+
 public class Robot extends IterativeRobot {
 
     private Joystick driveStick;
@@ -21,6 +24,8 @@ public class Robot extends IterativeRobot {
     private CustomDrive drive;
 
     private Solenoid climberSolenoid;
+    private Solenoid gearTiltSolenoid;
+
     private CANTalon intakeMotor;
     private CANTalon outputMotor;
 
@@ -34,6 +39,9 @@ public class Robot extends IterativeRobot {
 
         climberSolenoid = new Solenoid(Parameters.PCM_CAN_ID, Parameters.CLIMBER_SOLENOID_CHANNEL);
         climberSolenoid.set(false);
+
+        gearTiltSolenoid= new Solenoid(Parameters.PCM_CAN_ID, Parameters.GEAR_SOLENOID_CHANNEL);
+        gearTiltSolenoid.set(false);
 
         intakeMotor = new CANTalon(Parameters.INTAKE_MOTOR_CAN_ID);
         outputMotor = new CANTalon(Parameters.OUTPUT_MOTOR_CAN_ID);
@@ -71,7 +79,18 @@ public class Robot extends IterativeRobot {
         drive.getLeftDriveEncoder().reset();
         drive.getRightDriveEncoder().reset();
 
-        Command autoCommand = new SimpleBaselineCross(drive);
+        climberSolenoid.set(false);
+        gearTiltSolenoid.set(false);
+
+        SideGearPlace.Position position = RED_ALLIANCE_LEFT;
+        //RED_ALLIANCE_RIGHT;
+        //BLUE_ALLIANCE_LEFT;
+        //BLUE_ALLIANCE_RIGHT;
+
+        Command autoCommand;
+        //autoCommand = new SimpleBaselineCross(drive);
+        autoCommand = new SideGearPlace(drive, position);
+
         if (autoCommand != null) {
             System.out.println("Starting autonomous " + autoCommand.getName());
             autoCommand.start();
@@ -93,6 +112,7 @@ public class Robot extends IterativeRobot {
         drive.setHighGear(false);
 
         climberSolenoid.set(false);
+        gearTiltSolenoid.set(false);
 
         drive.getLeftDriveEncoder().reset();
         drive.getRightDriveEncoder().reset();
@@ -130,7 +150,6 @@ public class Robot extends IterativeRobot {
         }
 
         //CLIMBER
-        //TODO: Uncomment when ready to use climber
         if (operatorBox.getRawButton(1)) { //Big red switch set to ON position
             climberSolenoid.set(true); //Trigger the solenoid used for the climber
         }
@@ -138,6 +157,13 @@ public class Robot extends IterativeRobot {
             climberSolenoid.set(false);
         }
 
+        //GEAR TILT AND LATCH
+        if (operatorBox.getRawButton(7)) {
+            gearTiltSolenoid.set(true); //Tilt the gear holder and close the latch
+        }
+        else{
+            gearTiltSolenoid.set(false); //Retract gear holder and open the latch
+        }
 
         printToNetworkTables();
     }
