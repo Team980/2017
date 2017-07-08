@@ -31,6 +31,8 @@ public class Move extends Command {
     protected void initialize() {
         leftDriveEncoder.reset();
         rightDriveEncoder.reset();
+
+        System.out.println("Move command, distance = " + distance);
     }
 
     //Called periodically (20ms) - do work here
@@ -42,14 +44,14 @@ public class Move extends Command {
                 drive.setLeftRightMotorSetpoints(0, 0); //Stop driving
                 isFinished = true;
             } else {
-                drive.setLeftRightMotorSetpoints(Parameters.AUTO_SPEED, Parameters.AUTO_SPEED);
+                drive.setLeftRightMotorSetpoints(Parameters.AUTO_LEFT_SPEED, Parameters.AUTO_RIGHT_SPEED);
             }
         } else { //Negative distance
             if (leftDriveEncoder.getDistance() < distance && rightDriveEncoder.getDistance() < distance) {
                 drive.setLeftRightMotorSetpoints(0, 0); //Stop driving
                 isFinished = true;
             } else {
-                drive.setLeftRightMotorSetpoints(-Parameters.AUTO_SPEED, -Parameters.AUTO_SPEED);
+                drive.setLeftRightMotorSetpoints(-Parameters.AUTO_LEFT_SPEED, -Parameters.AUTO_RIGHT_SPEED);
             }
         }
     }

@@ -1,6 +1,7 @@
 package com.team980.robot2017;
 
 import com.ctre.CANTalon;
+import com.team980.robot2017.autonomous.FrontGearPlace;
 import com.team980.robot2017.autonomous.SideGearPlace;
 import com.team980.robot2017.autonomous.SimpleBaselineCross;
 import edu.wpi.cscore.UsbCamera;
@@ -12,8 +13,9 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-import static com.team980.robot2017.autonomous.SideGearPlace.Position.*;
+import static com.team980.robot2017.autonomous.SideGearPlace.Position.RED_ALLIANCE_LEFT;
 
 public class Robot extends IterativeRobot {
 
@@ -40,7 +42,7 @@ public class Robot extends IterativeRobot {
         climberSolenoid = new Solenoid(Parameters.PCM_CAN_ID, Parameters.CLIMBER_SOLENOID_CHANNEL);
         climberSolenoid.set(false);
 
-        gearTiltSolenoid= new Solenoid(Parameters.PCM_CAN_ID, Parameters.GEAR_SOLENOID_CHANNEL);
+        gearTiltSolenoid = new Solenoid(Parameters.PCM_CAN_ID, Parameters.GEAR_SOLENOID_CHANNEL);
         gearTiltSolenoid.set(false);
 
         intakeMotor = new CANTalon(Parameters.INTAKE_MOTOR_CAN_ID);
@@ -52,21 +54,20 @@ public class Robot extends IterativeRobot {
         driveWheel = new Joystick(Parameters.DRIVE_WHEEL_ID);
         operatorBox = new Joystick(Parameters.OPERATOR_BOX_ID);
 
-        /*
-        autoChooser = new SendableChooser<>();
-        autoChooser.addObject("None", null);
-        autoChooser.addObject("Simple Baseline Cross", new SimpleBaselineCross(drive));
-        autoChooser.addObject("Front Gear Place", new FrontGearPlace(drive));
-        autoChooser.addObject("Side Gear Place - Red Alliance Left",
+        autoChooser = new SendableChooser<>(); //TODO don't instantiate CommandGroups until runtime
+        autoChooser.addObject("0 - None", null);
+        autoChooser.addObject("1 - Simple Baseline Cross", new SimpleBaselineCross(drive));
+        autoChooser.addObject("2 - Front Gear Place", new FrontGearPlace(drive));
+        autoChooser.addObject("3 - Side Gear Place - Red Alliance Left",
                 new SideGearPlace(drive, SideGearPlace.Position.RED_ALLIANCE_LEFT));
-        autoChooser.addObject("Side Gear Place - Red Alliance Right",
+        autoChooser.addObject("4 - Side Gear Place - Red Alliance Right",
                 new SideGearPlace(drive, SideGearPlace.Position.RED_ALLIANCE_RIGHT));
-        autoChooser.addObject("Side Gear Place - Blue Alliance Left",
+        autoChooser.addObject("5 - Side Gear Place - Blue Alliance Left",
                 new SideGearPlace(drive, SideGearPlace.Position.BLUE_ALLIANCE_LEFT));
-        autoChooser.addObject("Side Gear Place - Blue Alliance Right",
+        autoChooser.addObject("6 - Side Gear Place - Blue Alliance Right",
                 new SideGearPlace(drive, SideGearPlace.Position.BLUE_ALLIANCE_RIGHT));
-        SmartDashboard.putData("Autonomous mode chooser", autoChooser);
-        */
+        SmartDashboard.putData("AutoChooser", autoChooser);
+
 
         UsbCamera videoSource0 = CameraServer.getInstance().startAutomaticCapture(0);
         videoSource0.setExposureManual(50);
@@ -89,7 +90,8 @@ public class Robot extends IterativeRobot {
 
         Command autoCommand;
         //autoCommand = new SimpleBaselineCross(drive);
-        autoCommand = new SideGearPlace(drive, position);
+        //autoCommand = new SideGearPlace(drive, position);
+        autoCommand = autoChooser.getSelected();
 
         if (autoCommand != null) {
             System.out.println("Starting autonomous " + autoCommand.getName());
@@ -152,16 +154,14 @@ public class Robot extends IterativeRobot {
         //CLIMBER
         if (operatorBox.getRawButton(1)) { //Big red switch set to ON position
             climberSolenoid.set(true); //Trigger the solenoid used for the climber
-        }
-        else{
+        } else {
             climberSolenoid.set(false);
         }
 
         //GEAR TILT AND LATCH
         if (operatorBox.getRawButton(7)) {
             gearTiltSolenoid.set(true); //Tilt the gear holder and close the latch
-        }
-        else{
+        } else {
             gearTiltSolenoid.set(false); //Retract gear holder and open the latch
         }
 
@@ -170,7 +170,8 @@ public class Robot extends IterativeRobot {
 
     @Override
     public void disabledInit() {
-
+        drive.setLeftRightMotorSetpoints(0, 0); //Stop driving
+        Scheduler.getInstance().removeAll();
     }
 
     private void printToNetworkTables() {

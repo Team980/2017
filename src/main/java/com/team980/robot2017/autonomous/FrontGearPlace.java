@@ -13,6 +13,6 @@ public class FrontGearPlace extends CommandGroup {
         addSequential(new Move(drive, 6.25)); //distance in feet to center peg
 
         //robot shouldn't move while human players take gear out
-        //we've aleady crossed the baseline, so don't bother to do anything else
+        //we've already crossed the baseline, so don't bother to do anything else
     }
 }

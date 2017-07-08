@@ -1,16 +1,10 @@
 package com.team980.robot2017.autonomous.subcommands;
 
-import com.ctre.PigeonImu;
 import com.team980.robot2017.CustomDrive;
-import com.team980.robot2017.Parameters;
 import edu.wpi.first.wpilibj.command.Command;
 
-/**
- * Created by Team 980 on 3/20/2017.
- */
 public class Wait extends Command {
 
-    //TODO: figure out distance from degrees
     private CustomDrive drive;
     private long startTime;
     private long waitTime;
@@ -29,6 +23,8 @@ public class Wait extends Command {
     protected void initialize() {
         startTime = System.currentTimeMillis();
         drive.setLeftRightMotorSetpoints(0,0);
+
+        System.out.println("Wait command, time = " + waitTime);
     }
 
     //Called periodically (20ms) - do work here

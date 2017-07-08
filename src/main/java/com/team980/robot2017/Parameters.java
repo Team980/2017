@@ -56,6 +56,7 @@ public class Parameters {
     public static final int IMU_CAN_ID = 4;
 
     // AUTONOMOUS
-    public static final double AUTO_SPEED = 0.4; //Until PID is back: [-1.0, 1.0]
+    public static final double AUTO_LEFT_SPEED = 0.215; //Until PID is back: [-1.0, 1.0]
+    public static final double AUTO_RIGHT_SPEED = 0.2;
     public static final double AUTO_DISTANCE = 15.0; // in feet
 }

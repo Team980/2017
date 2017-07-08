@@ -7,18 +7,19 @@ import edu.wpi.first.wpilibj.command.Command;
 
 public class IMUTurn extends Command {
 
-    CustomDrive drive;
-    PigeonImu imu;
+    private CustomDrive drive;
+    private PigeonImu imu;
 
-    double turnDegree;
+    private double turnDegree;
 
-    boolean isFinished = false;
+    private boolean isFinished = false;
 
     //Handles parameters
-    public IMUTurn(CustomDrive drive, double degrees) {
+    public IMUTurn(CustomDrive drive, PigeonImu imu, double degrees) {
         super("IMUTurn");
 
         this.drive = drive;
+        this.imu = imu;
 
         this.turnDegree = degrees;
     }
@@ -44,14 +45,14 @@ public class IMUTurn extends Command {
                 drive.setLeftRightMotorSetpoints(0, 0); //Stop driving
                 isFinished = true;
             } else {
-                drive.setLeftRightMotorSetpoints(-Parameters.AUTO_SPEED, Parameters.AUTO_SPEED); //turn left (positive)
+                drive.setLeftRightMotorSetpoints(-Parameters.AUTO_LEFT_SPEED, Parameters.AUTO_RIGHT_SPEED); //turn left (positive)
             }
         } else {  //Negative degree
             if (ypr[0] < turnDegree) {
                 drive.setLeftRightMotorSetpoints(0, 0); //Stop driving
                 isFinished = true;
             } else {
-                drive.setLeftRightMotorSetpoints(Parameters.AUTO_SPEED, -Parameters.AUTO_SPEED); //turn right (negative)
+                drive.setLeftRightMotorSetpoints(Parameters.AUTO_LEFT_SPEED, -Parameters.AUTO_RIGHT_SPEED); //turn right (negative)
             }
         }
     }
