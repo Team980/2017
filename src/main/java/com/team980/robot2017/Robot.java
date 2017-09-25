@@ -1,6 +1,6 @@
 package com.team980.robot2017;
 
-import com.ctre.CANTalon;
+import com.ctre.MotorControl.CANTalon;
 import com.team980.robot2017.autonomous.FrontGearPlace;
 import com.team980.robot2017.autonomous.SideGearPlace;
 import com.team980.robot2017.autonomous.SimpleBaselineCross;
