@@ -27,7 +27,8 @@ public class IMUTurn extends Command {
     //Called immediately before start, initialize things here
     @Override
     protected void initialize() {
-        double[] ypr = imu.GetYawPitchRoll();
+        double[] ypr = new double[3];
+        imu.GetYawPitchRoll(ypr);
 
         turnDegree += ypr[0]; //Convert relative to absolute position
     }
@@ -36,7 +37,8 @@ public class IMUTurn extends Command {
     @Override
     protected void execute() {
 
-        double[] ypr = imu.GetYawPitchRoll();
+        double[] ypr = new double[3];
+        imu.GetYawPitchRoll(ypr);
 
         if (turnDegree > 0) { //Positive degree
             if (ypr[0] > turnDegree) {

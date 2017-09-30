@@ -1,6 +1,7 @@
 package com.team980.robot2017;
 
-import com.ctre.MotorControl.CANTalon;
+import com.ctre.CANTalon;
+import com.ctre.PigeonImu;
 import com.team980.robot2017.autonomous.FrontGearPlace;
 import com.team980.robot2017.autonomous.SideGearPlace;
 import com.team980.robot2017.autonomous.SimpleBaselineCross;
@@ -31,7 +32,7 @@ public class Robot extends IterativeRobot {
     private CANTalon intakeMotor;
     private CANTalon outputMotor;
 
-    //private PigeonImu imu;
+    private PigeonImu imu;
 
     private SendableChooser<Command> autoChooser;
 
@@ -48,7 +49,7 @@ public class Robot extends IterativeRobot {
         intakeMotor = new CANTalon(Parameters.INTAKE_MOTOR_CAN_ID);
         outputMotor = new CANTalon(Parameters.OUTPUT_MOTOR_CAN_ID);
 
-        //imu = new PigeonImu(Parameters.IMU_CAN_ID);
+        imu = new PigeonImu(Parameters.IMU_CAN_ID);
 
         driveStick = new Joystick(Parameters.DRIVE_JOYSTICK_ID);
         driveWheel = new Joystick(Parameters.DRIVE_WHEEL_ID);
@@ -125,7 +126,6 @@ public class Robot extends IterativeRobot {
 
         //DRIVE
         drive.drive(driveStick, driveWheel);
-
         //FUEL PICKUP
         if (operatorBox.getRawButton(5)) { //INTAKE FORWARD
             intakeMotor.set(-Parameters.INTAKE_MOTOR_SPEED);
@@ -164,8 +164,14 @@ public class Robot extends IterativeRobot {
         } else {
             gearTiltSolenoid.set(false); //Retract gear holder and open the latch
         }
-
+/*
+        //IMU
+        double[] ypr = imu.GetYawPitchRoll();
+        showOnDash(0, Double.toString(ypr[0]));
+*/
         printToNetworkTables();
+
+
     }
 
     @Override
@@ -186,5 +192,12 @@ public class Robot extends IterativeRobot {
 
         table.putNumber("leftDistance", drive.getLeftDriveEncoder().getDistance());
         table.putNumber("rightDistance", drive.getRightDriveEncoder().getDistance());
+
+        //table.putNumberArray("IMU YPR" , imu.GetYawPitchRoll() );
     }
+  /*  private void showOnDash(int slot, String value) {
+        String dbString = String.format("DB/String %d" , slot);
+        SmartDashboard.putString(dbString, value);
+    }
+*/
 }

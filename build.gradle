@@ -8,11 +8,21 @@ plugins {
 frc {
     team = "980"
     robotClass = "com.team980.robot2017.Robot"
+
+    rioHost = "roborio-980-frc.frc-robot.local"
+    rioIP = "10.9.80.2"
+}
+
+wpi {
+    wpilibVersion = "2017.1.1"
+
+    talonSrxVersion = "4.4.1.8"
 }
 
 dependencies {
     compile wpilib()
     compile talonSrx()
+
 }
 
 def robotManifest = {
