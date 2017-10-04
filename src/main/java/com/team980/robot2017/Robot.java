@@ -12,7 +12,6 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
-import edu.wpi.first.wpilibj.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -33,6 +32,7 @@ public class Robot extends IterativeRobot {
     private CANTalon outputMotor;
 
     private PigeonImu imu;
+    private double[] ypr;
 
     private SendableChooser<Command> autoChooser;
 
@@ -51,6 +51,8 @@ public class Robot extends IterativeRobot {
 
         imu = new PigeonImu(Parameters.IMU_CAN_ID);
 
+        ypr = new double[3];
+
         driveStick = new Joystick(Parameters.DRIVE_JOYSTICK_ID);
         driveWheel = new Joystick(Parameters.DRIVE_WHEEL_ID);
         operatorBox = new Joystick(Parameters.OPERATOR_BOX_ID);
@@ -60,13 +62,13 @@ public class Robot extends IterativeRobot {
         autoChooser.addObject("1 - Simple Baseline Cross", new SimpleBaselineCross(drive));
         autoChooser.addObject("2 - Front Gear Place", new FrontGearPlace(drive));
         autoChooser.addObject("3 - Side Gear Place - Red Alliance Left",
-                new SideGearPlace(drive, SideGearPlace.Position.RED_ALLIANCE_LEFT));
+                new SideGearPlace(drive, imu, SideGearPlace.Position.RED_ALLIANCE_LEFT));
         autoChooser.addObject("4 - Side Gear Place - Red Alliance Right",
-                new SideGearPlace(drive, SideGearPlace.Position.RED_ALLIANCE_RIGHT));
+                new SideGearPlace(drive, imu, SideGearPlace.Position.RED_ALLIANCE_RIGHT));
         autoChooser.addObject("5 - Side Gear Place - Blue Alliance Left",
-                new SideGearPlace(drive, SideGearPlace.Position.BLUE_ALLIANCE_LEFT));
+                new SideGearPlace(drive, imu, SideGearPlace.Position.BLUE_ALLIANCE_LEFT));
         autoChooser.addObject("6 - Side Gear Place - Blue Alliance Right",
-                new SideGearPlace(drive, SideGearPlace.Position.BLUE_ALLIANCE_RIGHT));
+                new SideGearPlace(drive, imu, SideGearPlace.Position.BLUE_ALLIANCE_RIGHT));
         SmartDashboard.putData("AutoChooser", autoChooser);
 
 
@@ -80,6 +82,8 @@ public class Robot extends IterativeRobot {
 
         drive.getLeftDriveEncoder().reset();
         drive.getRightDriveEncoder().reset();
+
+        imu.SetYaw(0); //reset
 
         climberSolenoid.set(false);
         gearTiltSolenoid.set(false);
@@ -107,7 +111,7 @@ public class Robot extends IterativeRobot {
         //REQUIRED to run scheduled auto command
         Scheduler.getInstance().run();
 
-        printToNetworkTables();
+        printToSmartDashboard();
     }
 
     @Override
@@ -119,6 +123,8 @@ public class Robot extends IterativeRobot {
 
         drive.getLeftDriveEncoder().reset();
         drive.getRightDriveEncoder().reset();
+
+        imu.SetYaw(0); //reset
     }
 
     @Override
@@ -164,14 +170,11 @@ public class Robot extends IterativeRobot {
         } else {
             gearTiltSolenoid.set(false); //Retract gear holder and open the latch
         }
-/*
+
         //IMU
-        double[] ypr = imu.GetYawPitchRoll();
-        showOnDash(0, Double.toString(ypr[0]));
-*/
-        printToNetworkTables();
+        imu.GetYawPitchRoll(ypr);
 
-
+        printToSmartDashboard();
     }
 
     @Override
@@ -180,24 +183,21 @@ public class Robot extends IterativeRobot {
         Scheduler.getInstance().removeAll();
     }
 
-    private void printToNetworkTables() {
-        NetworkTable table = NetworkTable.getTable("Encoders");
+    private void printToSmartDashboard() {
+        SmartDashboard.putString("DB/String 0", String.valueOf(ypr[0])); //String 0 - yaw
+
+        //NetworkTable table = NetworkTable.getTable("Encoders");
 
         //NETWORK TABLES
-        table.putNumber("leftCounts", drive.getLeftDriveEncoder().get());
-        table.putNumber("rightCounts", drive.getRightDriveEncoder().get());
+        //table.putNumber("leftCounts", drive.getLeftDriveEncoder().get());
+        //table.putNumber("rightCounts", drive.getRightDriveEncoder().get());
 
-        table.putNumber("leftRate", drive.getLeftDriveEncoder().getRate());
-        table.putNumber("rightRate", drive.getRightDriveEncoder().getRate());
+        //table.putNumber("leftRate", drive.getLeftDriveEncoder().getRate());
+        //table.putNumber("rightRate", drive.getRightDriveEncoder().getRate());
 
-        table.putNumber("leftDistance", drive.getLeftDriveEncoder().getDistance());
-        table.putNumber("rightDistance", drive.getRightDriveEncoder().getDistance());
+        //table.putNumber("leftDistance", drive.getLeftDriveEncoder().getDistance());
+        //table.putNumber("rightDistance", drive.getRightDriveEncoder().getDistance());
 
         //table.putNumberArray("IMU YPR" , imu.GetYawPitchRoll() );
     }
-  /*  private void showOnDash(int slot, String value) {
-        String dbString = String.format("DB/String %d" , slot);
-        SmartDashboard.putString(dbString, value);
-    }
-*/
 }

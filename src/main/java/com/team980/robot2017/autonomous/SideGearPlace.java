@@ -4,18 +4,19 @@ import com.ctre.PigeonImu;
 import com.team980.robot2017.CustomDrive;
 import com.team980.robot2017.autonomous.subcommands.IMUTurn;
 import com.team980.robot2017.autonomous.subcommands.Move;
-import com.team980.robot2017.autonomous.subcommands.Turn;
 import com.team980.robot2017.autonomous.subcommands.Wait;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
 public class SideGearPlace extends CommandGroup {
 
     private CustomDrive drive;
+    private PigeonImu imu;
 
-    public SideGearPlace(CustomDrive drive, Position position) {
+    public SideGearPlace(CustomDrive drive, PigeonImu imu, Position position) {
         super("SideGearPlace at " + position);
         System.out.println("SideGearPlace at " + position);
         this.drive = drive;
+        this.imu = imu;
 
         switch (position) {
             case RED_ALLIANCE_LEFT:
@@ -41,7 +42,7 @@ public class SideGearPlace extends CommandGroup {
         //wait 0.5 seconds
         addSequential(new Wait(drive, 500));
         //turn 60 degrees
-        addSequential(new Turn(drive, 60.0));
+        addSequential(new IMUTurn(drive, imu, 60.0));
         //wait 0.5 seconds
         addSequential(new Wait(drive, 500));
         //Drive forward
@@ -56,7 +57,7 @@ public class SideGearPlace extends CommandGroup {
         //wait 0.5 seconds
         addSequential(new Wait(drive, 500));
         //turn -60 degrees
-        addSequential(new Turn(drive, -60));
+        addSequential(new IMUTurn(drive, imu, -60));
         //wait 0.5 seconds
         addSequential(new Wait(drive, 500));
         //Drive forward
@@ -71,7 +72,7 @@ public class SideGearPlace extends CommandGroup {
         //wait 0.5 seconds
         addSequential(new Wait(drive, 500));
         //turn 60 degrees
-        addSequential(new Turn(drive, 60.0));
+        addSequential(new IMUTurn(drive, imu, 60.0));
         //wait 0.5 seconds
         addSequential(new Wait(drive, 500));
         //Drive forward
@@ -86,7 +87,7 @@ public class SideGearPlace extends CommandGroup {
         //wait 0.5 seconds
         addSequential(new Wait(drive, 500));
         //turn -60 degrees
-        addSequential(new Turn(drive, -60.0));
+        addSequential(new IMUTurn(drive, imu, -60.0));
         //wait 0.5 seconds
         addSequential(new Wait(drive, 500));
         //Drive forward

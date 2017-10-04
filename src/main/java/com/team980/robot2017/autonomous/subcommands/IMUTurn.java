@@ -27,6 +27,8 @@ public class IMUTurn extends Command {
     //Called immediately before start, initialize things here
     @Override
     protected void initialize() {
+        imu.SetYaw(0); //reset
+
         double[] ypr = new double[3];
         imu.GetYawPitchRoll(ypr);
 
