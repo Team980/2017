@@ -9,14 +9,13 @@ frc {
     team = "980"
     robotClass = "com.team980.robot2017.Robot"
 
-    rioHost = "roborio-980-frc.frc-robot.local"
-    rioIP = "10.9.80.2"
+    rioHost = "roborio-980-frc.local"
+    //rioIP = "10.9.80.1"
 }
 
 wpi {
-    wpilibVersion = "2017.1.1"
-
-    talonSrxVersion = "4.4.1.8"
+    wpilibVersion = "2017.3.1" //Provided by Eclipse
+    talonSrxVersion = "4.4.1.14" //Provided by CTRE Toolsuite
 }
 
 dependencies {
