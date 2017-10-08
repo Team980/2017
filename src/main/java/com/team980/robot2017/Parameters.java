@@ -11,7 +11,7 @@ public class Parameters {
     public static final int RIGHT_DRIVE_PWM_CHANNEL = 1;
 
     public static final double MAX_SPEED = 16.0; // in feet per second
-    public static final double TURN_DAMPEN = 0.6; // adjust this to dampen the steering: [0.0, 1.0]
+    public static final double TURN_DAMPEN = 1.0; // adjust this to dampen the steering: [0.0, 1.0]
     public static final double TURN_GAIN = 1.0;  // do not adjust this
 
     public static final double SHIFT_THRESHOLD = 4; // in feet per second
@@ -56,7 +56,7 @@ public class Parameters {
     public static final int IMU_CAN_ID = 6;
 
     // AUTONOMOUS
-    public static final double AUTO_LEFT_SPEED = 0.215; //Until PID is back: [-1.0, 1.0]
-    public static final double AUTO_RIGHT_SPEED = 0.2;
+    public static final double AUTO_LEFT_SPEED = 0.62; //Until PID is back: [-1.0, 1.0]
+    public static final double AUTO_RIGHT_SPEED = 0.6;
     public static final double AUTO_DISTANCE = 15.0; // in feet
 }

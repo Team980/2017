@@ -2,20 +2,22 @@ plugins {
     id "java"
     id "eclipse"
     id "idea"
-    id "jaci.openrio.gradle.GradleRIO" version "2017.2.3"
+    id "jaci.openrio.gradle.GradleRIO" version "2017.1.5"
 }
 
 frc {
     team = "980"
     robotClass = "com.team980.robot2017.Robot"
 
-    rioHost = "roborio-980-frc.local"
-    //rioIP = "10.9.80.1"
+    //rioHost = "roborio-980-frc.local"
+    //rioIP = "10.9.80.2"
+    rioIP = "fe80::280:2fff:fe25:be2e%22" //direct to roboRIO
 }
 
 wpi {
     wpilibVersion = "2017.3.1" //Provided by Eclipse
     talonSrxVersion = "4.4.1.14" //Provided by CTRE Toolsuite
+    opencvVersion = "3.1.0" //Fix GradleRIO error
 }
 
 dependencies {
